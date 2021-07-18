@@ -9,11 +9,13 @@ class Particle {
     this.vel=0;
     this.default_vel=0.5;
     this.accel=0;
+    this.alpha=0;
     this.spawn();
   }
   spawn(){
     var randomRadians=Math.random()*(Math.PI*2);
     var randomHypot=Math.random()*spawnRadius;
+    this.alpha=0;
     this.vel=this.default_vel;
     this.accel=0.002*(1/(randomHypot/spawnRadius));
     this.x=spawn_x+(randomHypot*Math.cos(randomRadians));
@@ -23,10 +25,14 @@ class Particle {
     this.angle=Math.atan2((this.target_y-this.y),(this.target_x-this.x));
   }
 	update(c){
+    // Update opacity
+    if(this.alpha<1){
+      this.alpha+=0.005;
+    }
     // Draw
     c.beginPath();
     c.arc(this.x,this.y,this.size,0,Math.PI*2,false);
-    c.strokeStyle = "white";
+    c.strokeStyle = "rgba(255, 255, 255, "+this.alpha+")";
     c.stroke();
     c.fillStyle = "black";
     c.fill();
@@ -72,7 +78,7 @@ var canvas = document.querySelector('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext('2d');
-var maxParticle=500;
+var maxParticle=800;
 var particles=[];
 // Spawn Circle
 var spawn_x=window.innerWidth/2;
