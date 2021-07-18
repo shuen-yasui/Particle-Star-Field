@@ -1,7 +1,7 @@
 class Particle {
-	constructor(){
-    this.x=window.innerWidth/2;
-    this.y=window.innerHeight/2;
+	constructor(sX,sY){
+    this.x=sX;
+    this.y=sY;
     this.size=1;
 	}
 	update(c){
@@ -21,14 +21,20 @@ class Particle {
 }
 function init(){
   console.log("START");
-  particles.push(new Particle())
+  i=0;
+  while(i<maxParticle){
+    spawnX=spawnBox_x+(spawnBoxWidth*Math.random());
+    spawnY=spawnBox_y+(spawnBoxHeight*Math.random());
+    particles.push(new Particle(spawnX,spawnY));
+    i+=1
+  }
 	update();
 }
 function update(){
 	c.clearRect(0,0,window.innerWidth,window.innerHeight);
   // Draw starting rect
   c.beginPath();
-  c.rect(0,(window.innerHeight/2)-50,100,100);
+  c.rect(spawnBox_x,spawnBox_y,spawnBoxWidth,spawnBoxHeight);
   c.strokeStyle = "white";
   c.stroke();
   c.closePath();
@@ -43,5 +49,11 @@ var canvas = document.querySelector('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext('2d');
-var particles=[]
+var maxParticle=10;
+var particles=[];
+// Spawn Box
+var spawnBoxWidth=window.innerWidth/6;
+var spawnBoxHeight=window.innerHeight/6;
+var spawnBox_x=0;
+var spawnBox_y=(window.innerHeight/2)-(spawnBoxHeight/2);
 init();
