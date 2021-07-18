@@ -26,7 +26,14 @@ function init(){
 }
 function update(){
 	c.clearRect(0,0,window.innerWidth,window.innerHeight);
-	requestAnimationFrame(update);
+  // Draw starting rect
+  c.beginPath();
+  c.rect(0,(window.innerHeight/2)-50,100,100);
+  c.strokeStyle = "white";
+  c.stroke();
+  c.closePath();
+  // Update
+  requestAnimationFrame(update);
   for (var i=0;i<particles.length;i++){
     P=particles[i]
     P.update(c)
