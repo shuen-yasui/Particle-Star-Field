@@ -6,13 +6,16 @@ class Particle {
     this.target_y=0;
     this.angle=0;
     this.size=0.5;
-    this.vel=5;
+    this.vel=0;
+    this.default_vel=0.5;
     this.accel=0;
     this.spawn();
   }
   spawn(){
     var randomRadians=Math.random()*(Math.PI*2);
     var randomHypot=Math.random()*spawnRadius;
+    this.vel=this.default_vel;
+    this.accel=0.002*(1/(randomHypot/spawnRadius));
     this.x=spawn_x+(randomHypot*Math.cos(randomRadians));
     this.y=spawn_y+(randomHypot*Math.sin(randomRadians));
     this.target_x=spawn_x+(10*randomHypot*Math.cos(randomRadians));
@@ -29,6 +32,7 @@ class Particle {
     c.fill();
     c.closePath();
     // Movement
+    this.vel+=this.accel;
     this.x+=(this.vel*Math.cos(this.angle));
     this.y+=(this.vel*Math.sin(this.angle));
     //console.log("X:"+this.x+" Y:"+this.y+" Target: "+this.target_x+","+this.target_y);
@@ -68,7 +72,7 @@ var canvas = document.querySelector('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext('2d');
-var maxParticle=100;
+var maxParticle=500;
 var particles=[];
 // Spawn Circle
 var spawn_x=window.innerWidth/2;
