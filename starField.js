@@ -1,9 +1,14 @@
 class Particle {
-	constructor(sX,sY){
-    this.x=sX;
-    this.y=sY;
+	constructor(){
+    this.x=0;
+    this.y=0;
     this.size=1;
-	}
+    this.spawn();
+  }
+  spawn(){
+    this.x=spawnBox_x+(spawnBoxWidth*Math.random());
+    this.y=spawnBox_y+(spawnBoxHeight*Math.random());
+  }
 	update(c){
     c.beginPath();
     c.arc(this.x,this.y,this.size,0,Math.PI * 2,false);
@@ -14,7 +19,7 @@ class Particle {
     c.closePath();
     this.x+=5;
     if (this.x>=window.innerWidth){
-      this.x=0;
+      this.spawn();
     }
     this.size=(5+(this.x/window.innerWidth)*20);
 	}
@@ -23,9 +28,7 @@ function init(){
   console.log("START");
   i=0;
   while(i<maxParticle){
-    spawnX=spawnBox_x+(spawnBoxWidth*Math.random());
-    spawnY=spawnBox_y+(spawnBoxHeight*Math.random());
-    particles.push(new Particle(spawnX,spawnY));
+    particles.push(new Particle());
     i+=1
   }
 	update();
