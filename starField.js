@@ -10,19 +10,27 @@ class Particle {
     this.default_vel=0.5;
     this.accel=0;
     this.alpha=0;
+    this.alphaDelta=0.005;
+    this.alphaMax=0.9;
     this.isDistant=isDistant;
-    this.spawn();
+    this.spawn(true);
+    // Random start position
   }
-  spawn(){
+  spawn(isInit){
     var randomRadians=Math.random()*(Math.PI*2);
     var randomHypot=Math.random()*spawnRadius;
     this.alpha=0;
     this.vel=this.default_vel;
     this.accel=0.002*(1/(randomHypot/spawnRadius));
+    if(isInit==true){
+      var randomHypot=Math.random()*(window.innerWidth/2);
+    }
     if(this.isDistant==true){
-      randomHypot=spawnRadius;
+      randomHypot=spawnRadius+(Math.random()*(window.innerWidth/2));
       this.vel=0.1;
       this.accel=0;
+      this.alphaDelta=0.001;
+      this.alphaMax=Math.random()*1;
     }
     this.x=spawn_x+(randomHypot*Math.cos(randomRadians));
     this.y=spawn_y+(randomHypot*Math.sin(randomRadians));
@@ -32,8 +40,8 @@ class Particle {
   }
 	update(c){
     // Update opacity
-    if(this.alpha<1){
-      this.alpha+=0.005;
+    if(this.alpha<this.alphaMax){
+      this.alpha+=this.alphaDelta;
     }
     // Draw
     c.beginPath();
@@ -89,7 +97,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext('2d');
 var maxParticle=500;
-var maxDistantParticles=200;
+var maxDistantParticles=500;
 var particles=[];
 var distantParticles=[];
 // Spawn Circle
