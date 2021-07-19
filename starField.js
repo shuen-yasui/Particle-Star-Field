@@ -1,5 +1,5 @@
 class Particle {
-	constructor(){
+	constructor(isDistant){
     this.x=0;
     this.y=0;
     this.target_x=0;
@@ -10,6 +10,7 @@ class Particle {
     this.default_vel=0.5;
     this.accel=0;
     this.alpha=0;
+    this.isDistant=isDistant;
     this.spawn();
   }
   spawn(){
@@ -18,6 +19,11 @@ class Particle {
     this.alpha=0;
     this.vel=this.default_vel;
     this.accel=0.002*(1/(randomHypot/spawnRadius));
+    if(this.isDistant==true){
+      randomHypot=spawnRadius;
+      this.vel=0.1;
+      this.accel=0;
+    }
     this.x=spawn_x+(randomHypot*Math.cos(randomRadians));
     this.y=spawn_y+(randomHypot*Math.sin(randomRadians));
     this.target_x=spawn_x+(10*randomHypot*Math.cos(randomRadians));
@@ -49,14 +55,19 @@ function init(){
   console.log("START");
   i=0;
   while(i<maxParticle){
-    particles.push(new Particle());
+    particles.push(new Particle(false));
+    i+=1
+  }
+  i=0
+  while(i<maxDistantParticles){
+    distantParticles.push(new Particle(true));
     i+=1
   }
 	update();
 }
 function update(){
 	c.clearRect(0,0,window.innerWidth,window.innerHeight);
-  // Draw starting rect
+  // Draw starting circle
   c.beginPath();
   c.arc(spawn_x,spawn_y,spawnRadius,0,Math.PI * 2,false);
   c.strokeStyle = "white";
@@ -68,15 +79,21 @@ function update(){
     P=particles[i]
     P.update(c)
   }
+  for (var i=0;i<distantParticles.length;i++){
+    P=distantParticles[i]
+    P.update(c)
+  }
 }
 var canvas = document.querySelector('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext('2d');
-var maxParticle=1000;
+var maxParticle=500;
+var maxDistantParticles=200;
 var particles=[];
+var distantParticles=[];
 // Spawn Circle
 var spawn_x=window.innerWidth/2;
 var spawn_y=window.innerHeight/2;
-var spawnRadius=100;
+var spawnRadius=300;
 init();
