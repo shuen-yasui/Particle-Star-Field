@@ -76,9 +76,13 @@ function init(){
 function update(){
 	c.clearRect(0,0,window.innerWidth,window.innerHeight);
   // Draw starting circle
+  movingCircle+=0.01;
+  if(movingCircleAlpha<0.7){
+    movingCircleAlpha+=0.0001;
+  }
   c.beginPath();
-  c.arc(spawn_x,spawn_y,spawnRadius,0,Math.PI * 2,false);
-  c.strokeStyle = "white";
+  c.arc(spawn_x,spawn_y,movingCircle,0,Math.PI * 2,false);
+  c.strokeStyle = "rgba(255, 255, 255, "+movingCircleAlpha+")";
   c.stroke();
   c.closePath();
   // Update
@@ -104,4 +108,6 @@ var distantParticles=[];
 var spawn_x=window.innerWidth/2;
 var spawn_y=window.innerHeight/2;
 var spawnRadius=300;
+var movingCircle=300;
+var movingCircleAlpha=0;
 init();
